@@ -60,7 +60,7 @@ CXChildVisitResult treeBuilder(CXCursor cursor, CXCursor /* parent */, CXClientD
 
 	// create a Node for current AST structure
 	CXCursorKind cursorKind = clang_getCursorKind(cursor);
-	Node<StringNodeData> *current = new Node<StringNodeData>(new StringNodeData(getCursorKindName(cursorKind)));
+	auto *current = new Node<StringNodeData>(new StringNodeData(getCursorKindName(cursorKind)));
 
 	// link it to the main tree
 	Node<StringNodeData> *parent = *(reinterpret_cast<Node<StringNodeData> **>(clientData));
@@ -74,7 +74,7 @@ CXChildVisitResult treeBuilder(CXCursor cursor, CXCursor /* parent */, CXClientD
 	return CXChildVisit_Continue;
 }
 
-Node<StringNodeData> *buildTree(std::string filename)
+Node<StringNodeData> *buildTree(std::string& filename)
 {
 	int displayDiagnostics = 0;
 	if (verbose) {
@@ -96,7 +96,7 @@ Node<StringNodeData> *buildTree(std::string filename)
 												 filename.c_str(),
 												 defaultArguments,
 												 std::extent<decltype(defaultArguments)>::value,
-												 0, 0,
+												 nullptr, 0,
 												 CXTranslationUnit_None);
 
 	if (!translationUnit)
@@ -114,7 +114,7 @@ Node<StringNodeData> *buildTree(std::string filename)
 		clang_visitChildren(rootCursor, visitor, &level);
 	}
 
-	Node<StringNodeData> *root = new Node<StringNodeData>(new StringNodeData(getCursorKindName(rootKind)));
+	auto *root = new Node<StringNodeData>(new StringNodeData(getCursorKindName(rootKind)));
 	clang_visitChildren(rootCursor, treeBuilder, &root);
 
 	clang_disposeTranslationUnit(translationUnit);
@@ -138,12 +138,12 @@ int main(int argc, char **argv)
 	const char *optstring = "vh";
 	int c;
 	struct option opts[] = {
-		{"verbose", 0, NULL, 'v'},
-		{"help", 0, NULL, 'h'},
-		{0, 0, 0, 0},
+		{"verbose", 0, nullptr, 'v'},
+		{"help", 0, nullptr, 'h'},
+		{nullptr, 0, nullptr, 0},
 	};
 
-	while ((c = getopt_long(argc, argv, optstring, opts, NULL)) != -1)
+	while ((c = getopt_long(argc, argv, optstring, opts, nullptr)) != -1)
 	{
 		switch (c)
 		{
@@ -188,7 +188,7 @@ int main(int argc, char **argv)
 
 	float DistAB = computeEditDistance(n1, n2);
 
-	Node<StringNodeData> *emptyTree = new Node<StringNodeData>(new StringNodeData(""));
+	auto *emptyTree = new Node<StringNodeData>(new StringNodeData(""));
 	float DistA0 = computeEditDistance(n1, emptyTree);
 	float DistB0 = computeEditDistance(n2, emptyTree);
 
