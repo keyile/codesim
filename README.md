@@ -8,7 +8,8 @@ This repository contains a tool to compute similarity of codes, based on libclan
 * `clang`
 
 In Ubuntu 18.04 you can run this command:
-   sudo apt install clang libclang-dev
+
+    sudo apt install clang libclang-dev
 
 # Building the executable
 
@@ -21,7 +22,7 @@ CMake will try to find your llvm location. If that fails on your system, you sho
 
 # Run the tool
 
-  	$ ./codesim [-h|--help] [-v|--verbose] code1.cpp code2.cpp
+    $ ./codesim [-h|--help] [-v|--verbose] code1.cpp code2.cpp
 
 # Additional information
 
